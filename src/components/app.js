@@ -124,7 +124,7 @@ class App extends Component {
                 var labels = []
                 var thumbs = []
                 var items = []
-                for(const m of data['manifests']) {
+                for(const m of data['items']) {
                     items.push(m['id'])
                     this.enrich_view(m['id'])
                     labels[m['id']]="<title>"
