@@ -69,13 +69,6 @@ const initial_state = {
     items: [],
     thumbs: [],
     labels: [],
-    v2json: '',
-    v2: {
-        '@context' : 'http://iiif.io/api/presentation/2/context.json',
-        '@id': '',
-        '@type': 'sc:Collection',
-        'manifests': []
-    },
     v3: {
         '@context' : 'http://iiif.io/api/presentation/3/context.json',
         'id': '',
