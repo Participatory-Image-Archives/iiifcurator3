@@ -126,6 +126,9 @@ class App extends Component {
                 if(data['id']) {
                     id = data['id']
                 }
+                if(data.label) {
+                    label = data.label[Object.keys(data.label)][0]
+                }
 
                 for(const m of data['items']) {
                     items.push(m['id'])
@@ -138,9 +141,6 @@ class App extends Component {
                     }
                 }
 
-                if(data['label'][0] instanceof Array) {
-                    label = data['label'][0][0]
-                }
 
                 store.dispatch({type: 'LOAD_COLLECTION',data: {
                     label: label,
