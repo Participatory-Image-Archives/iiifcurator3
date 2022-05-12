@@ -1,6 +1,6 @@
 # iiifcurator3
 
-Fork from Leander Seige's [iiifcurator](https://github.com/leanderseige/iiifcurator) to adapt his application only for the IIIF Presentation API 3.
+Fork from Leander Seige's [iiifcurator](https://github.com/leanderseige/iiifcurator) to adapt his application only for the IIIF Presentation API 3 that is leveraged within the Participatory Knowledge Practices in Analogue and Digital Image Archives (PIA) project.
 
 This is a small tool to manually create and curate small collections according to the IIIF Presentation API.
 
@@ -15,7 +15,7 @@ This is my first project with React and Redux, so for sure it is far from being 
 Check out the source code and change into the directory:
 
 ```
-git clone 'https://github.com/leanderseige/iiifcurator'
+git clone 'https://github.com/Participatory-Image-Archives/iiifcurator3'
 cd iiifcurator
 ```
 
