@@ -175,7 +175,7 @@ class App extends Component {
                 </div>
                 <div className={styles.gridright}>
                     <JsonOut />
-                    <p>Pretty neat!</p>
+                    <p>Work in progress</p>
                 </div>
             </div>
         )
