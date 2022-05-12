@@ -134,8 +134,9 @@ class App extends Component {
                         break
                     }
                 }
+                console.log(data)
                 store.dispatch({type: 'LOAD_COLLECTION',data: {
-                    label: data['label'],
+                    label: data['label']['en'][0],
                     uri: data['id'],
                     items: items,
                     labels: labels,

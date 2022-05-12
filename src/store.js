@@ -47,7 +47,7 @@ function reducer(state, action) {
             temp.v3 = Object.assign({}, state.v3)
             temp.uri = action.uri
             temp.label = action.label
-            temp.v3['@id'] = action.uri
+            temp.v3['id'] = action.uri
             temp.v3['label'] = action.label
             return Object.assign({}, state, temp)
         }
