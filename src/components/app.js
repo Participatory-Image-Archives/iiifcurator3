@@ -15,9 +15,9 @@ class App extends Component {
     constructor(props) {
         super(props)
         const state = store.getState()
-        this.callbackLoadCollection('https://iiif.manducus.net/collections/random/summer2020.json')
-        this.rebuildCollectionV2 = this.rebuildCollectionV2.bind(this)
-        this.rebuildCollectionV2(state.items)
+        this.callbackLoadCollection('https://raw.githubusercontent.com/Participatory-Image-Archives/pia-data-model/main/iiif/boilerplates/collection_boilerplate_empty.json')
+        this.rebuildCollectionv3 = this.rebuildCollectionv3.bind(this)
+        this.rebuildCollectionv3(state.items)
     }
 
     componentDidMount() {
@@ -25,7 +25,7 @@ class App extends Component {
         for (const uri of state.items) {
             this.enrich_view(uri)
         }
-        this.rebuildCollectionV2(state.items)
+        this.rebuildCollectionv3(state.items)
     }
 
     enrich_view(uri) {
@@ -34,48 +34,50 @@ class App extends Component {
             .then((data) => {
                 const state = store.getState()
                 if('label' in data) {
-                    if(typeof data.label == 'string') {
+                    console.log(data.label)
+                    var label = data.label.en[0];
+                    /*if(typeof data.label == 'string') {
                         var label = data.label;
                     } else {
                         var label = data.label['@value'];
-                    }
+                    }*/
                 } else {
                     var label = uri;
                 }
-                if('thumbnail' in data['sequences'][0]['canvases'][0]) {
-                    var thumbnail = data['sequences'][0]['canvases'][0]['thumbnail'];
+                if('thumbnail' in data['items'][0]['items'][0]) {
+                    var thumbnail = data['items'][0]['items'][0]['thumbnail'];
                 } else {
-                    var thumbnail = data['sequences'][0]['canvases'][0]['images'][0]['resource']['service']['@id']+'/full/200,/0/default.jpg';
+                    var thumbnail = data['items'][0]['items'][0]['items'][0]['body']['service'][0]['id']+'/full/200,/0/default.jpg';
                 }
                 store.dispatch({type: 'ENRICH_VIEW',
                     uri: uri,
                     label: label,
                     thumb: thumbnail
                 })
-                this.rebuildCollectionV2(state.items)
+                this.rebuildCollectionv3(state.items)
             })
             .catch(console.log)
     }
 
     callbackSwapItems = (childData) => {
-        this.rebuildCollectionV2(childData)
+        this.rebuildCollectionv3(childData)
     }
 
-    rebuildCollectionV2(tempitems) {
-        console.log("rebuildCollectionV2")
+    rebuildCollectionv3(tempitems) {
+        console.log("rebuildCollectionv3")
         const state = store.getState()
-        var tempv2 = state.v2
-        tempv2['manifests'] = []
+        var tempv3 = state.v3
+        tempv3['manifests'] = []
         for(const key in tempitems) {
             let tm = {}
-            tm['@id']=tempitems[key]
-            tm['@type']='sc:Manifest'
+            tm['id']=tempitems[key]
+            tm['type']='Manifest'
             tm['label']=state.labels[tempitems[key]]
-            tempv2['manifests'].push(tm)
+            tempv3['manifests'].push(tm)
         }
-        var tempv2json = JSON.stringify(tempv2, null, 2)
-        store.dispatch({type:'SET_IIIF',v2: tempv2})
-        store.dispatch({type:'SET_IIIFJSON',v2json: tempv2json})
+        var tempv3json = JSON.stringify(tempv3, null, 2)
+        store.dispatch({type:'SET_IIIF',v3: tempv3})
+        store.dispatch({type:'SET_IIIFJSON',v3json: tempv3json})
     }
 
     callbackRemoveItem = (uri) => {
@@ -83,7 +85,7 @@ class App extends Component {
         store.dispatch({type: 'REMOVE_MANIFEST',uri: uri })
         const state = store.getState()
         var tempitems = state.items
-        this.rebuildCollectionV2(tempitems)
+        this.rebuildCollectionv3(tempitems)
         // this.forceUpdate()
     }
 
@@ -98,21 +100,21 @@ class App extends Component {
           store.dispatch({type: 'ADD_MANIFEST', uri: uri })
           this.enrich_view(uri)
         }
-        this.rebuildCollectionV2(state.items)
+        this.rebuildCollectionv3(state.items)
     }
 
     callbackUpdateCollection = () => {
         const state = store.getState()
-        var tempv2 = state.v2
-        tempv2['@id']=state.uri
-        tempv2['label']=state.label
+        var tempv3 = state.v3
+        tempv3['id']=state.uri
+        tempv3['label']=state.label
         const ordered = {}
-        Object.keys(tempv2).sort().forEach(function(key) {
-            ordered[key] = tempv2[key]
+        Object.keys(tempv3).sort().forEach(function(key) {
+            ordered[key] = tempv3[key]
         })
-        var tempv2json = JSON.stringify(tempv2, null, 2)
-        store.dispatch({type:'SET_IIIFJSON',v2json: tempv2json})
-        store.dispatch({type:'SET_IIIF',v2: ordered})
+        var tempv3json = JSON.stringify(tempv3, null, 2)
+        store.dispatch({type:'SET_IIIFJSON',v3json: tempv3json})
+        store.dispatch({type:'SET_IIIF',v3: ordered})
     }
 
     callbackLoadCollection = (uri) => {
@@ -123,10 +125,10 @@ class App extends Component {
                 var thumbs = []
                 var items = []
                 for(const m of data['manifests']) {
-                    items.push(m['@id'])
-                    this.enrich_view(m['@id'])
-                    labels[m['@id']]="<title>"
-                    thumbs[m['@id']]="logo192.png"
+                    items.push(m['id'])
+                    this.enrich_view(m['id'])
+                    labels[m['id']]="<title>"
+                    thumbs[m['id']]="logo192.png"
                     if(items.length>100) {
                         alert("stopping at 100 items")
                         break
@@ -134,13 +136,13 @@ class App extends Component {
                 }
                 store.dispatch({type: 'LOAD_COLLECTION',data: {
                     label: data['label'],
-                    uri: data['@id'],
+                    uri: data['id'],
                     items: items,
                     labels: labels,
                     thumbs: thumbs
                 }})
                 this.callbackUpdateCollection()
-                this.rebuildCollectionV2(items)
+                this.rebuildCollectionv3(items)
             })
             .catch(console.log)
     }
@@ -150,21 +152,21 @@ class App extends Component {
         return (
             <div className={styles.gridwrap}>
                 <div className={styles.headleft}>
-                    <button onClick={(e) => this.callbackLoadCollection('https://iiif.manducus.net/collections/random/empty.json')}>
+                    <button onClick={(e) => this.callbackLoadCollection('https://raw.githubusercontent.com/Participatory-Image-Archives/pia-data-model/main/iiif/boilerplates/collection_boilerplate_empty.json')}>
                     Load Empty Collection
                     </button>
-                    <button onClick={(e) => this.callbackLoadCollection('https://iiif.manducus.net/collections/random/autumn.json')}>
-                    Load Autumn Collection
+                    <button onClick={(e) => this.callbackLoadCollection('https://raw.githubusercontent.com/Participatory-Image-Archives/pia-data-model/main/iiif/boilerplates/collection_boilerplate01.json')}>
+                    Load Familie Kreis Collection (SGV_10)
                     </button>
-                    <button onClick={(e) => this.callbackLoadCollection('https://iiif.manducus.net/collections/random/halloween2019.json')}>
-                    Load Halloween Collection
+                    <button onClick={(e) => this.callbackLoadCollection('https://raw.githubusercontent.com/Participatory-Image-Archives/pia-data-model/main/iiif/boilerplates/collection_boilerplate02.json')}>
+                    Load Ernst Brunner Collection (SGV_12)
                     </button>
                     <InputCollection loadCallback={this.callbackLoadCollection} />
                     <InputManifest addCallback={this.callbackAddItem} />
                 </div>
                 <div className={styles.headright}>
                     <InputCollectionHead updateCallback={this.callbackUpdateCollection} />
-                    <CopyToClipboard text={this.props.v2json}>
+                    <CopyToClipboard text={this.props.v3json}>
                       <button>COPY</button>
                     </CopyToClipboard>
                 </div>
@@ -173,11 +175,7 @@ class App extends Component {
                 </div>
                 <div className={styles.gridright}>
                     <JsonOut />
-                    <p>
-                        <a href="https://github.com/leanderseige/iiifcurator" target="_blank">
-                        This code is on github!
-                        </a>
-                    </p>
+                    <p>Pretty neat!</p>
                 </div>
             </div>
         )
@@ -186,7 +184,7 @@ class App extends Component {
 
 function mapStateToProps(state, ownProps) {
     return {
-        v2json: state.v2json
+        v3json: state.v3json
     };
 }
 

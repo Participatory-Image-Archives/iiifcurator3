@@ -8,15 +8,15 @@ class JsonOut extends Component {
     render() {
         return (
             <div className={styles.jsonout}>
-                <JSONPretty id="json-pretty" data={this.props.v2json}></JSONPretty>
+                <JSONPretty id="json-pretty" data={this.props.v3json}></JSONPretty>
             </div> );
     }
 }
 
 function mapStateToProps(state, ownProps) {
     return {
-        v2json: state.v2json,
-        v2: state.v2,
+        v3json: state.v3json,
+        v3: state.v3,
     };
 }
 
