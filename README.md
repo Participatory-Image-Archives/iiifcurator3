@@ -1,8 +1,8 @@
-# iiifcurator
+# iiifcurator3
+
+Fork from Leander Seige's [iiifcurator](https://github.com/leanderseige/iiifcurator) to adapt his application only for the IIIF Presentation API 3.
 
 This is a small tool to manually create and curate small collections according to the IIIF Presentation API.
-
-See it in action: https://manducus.net/iiifcurator/
 
 ![iiifcurator screenshot](screenshot.png)
 
@@ -42,5 +42,3 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.<br />
 Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
