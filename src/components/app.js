@@ -67,13 +67,13 @@ class App extends Component {
         console.log("rebuildCollectionv3")
         const state = store.getState()
         var tempv3 = state.v3
-        tempv3['manifests'] = []
+        tempv3['items'] = []
         for(const key in tempitems) {
             let tm = {}
             tm['id']=tempitems[key]
             tm['type']='Manifest'
             tm['label']=state.labels[tempitems[key]]
-            tempv3['manifests'].push(tm)
+            tempv3['items'].push(tm)
         }
         var tempv3json = JSON.stringify(tempv3, null, 2)
         store.dispatch({type:'SET_IIIF',v3: tempv3})
