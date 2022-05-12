@@ -121,9 +121,12 @@ class App extends Component {
         fetch(uri)
             .then(res => res.json())
             .then((data) => {
-                var labels = []
-                var thumbs = []
-                var items = []
+                var labels = [], thumbs = [], items = [], id = '<empty>', label = '<empty>';
+
+                if(data['id']) {
+                    id = data['id']
+                }
+
                 for(const m of data['items']) {
                     items.push(m['id'])
                     this.enrich_view(m['id'])
@@ -134,10 +137,14 @@ class App extends Component {
                         break
                     }
                 }
-                console.log(data)
+
+                if(data['label'][0] instanceof Array) {
+                    label = data['label'][0][0]
+                }
+
                 store.dispatch({type: 'LOAD_COLLECTION',data: {
-                    label: data['label']['en'][0],
-                    uri: data['id'],
+                    label: label,
+                    uri: id,
                     items: items,
                     labels: labels,
                     thumbs: thumbs
