@@ -65,6 +65,8 @@ function reducer(state, action) {
     }
 }
 
+// Initial state of a Collection
+
 const initial_state = {
     items: [],
     thumbs: [],
