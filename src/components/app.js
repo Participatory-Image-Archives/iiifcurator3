@@ -163,10 +163,10 @@ class App extends Component {
                     <button onClick={(e) => this.callbackLoadCollection('https://raw.githubusercontent.com/Participatory-Image-Archives/pia-data-model/main/iiif/boilerplates/collection_boilerplate_empty.json')}>
                     Load Empty Collection
                     </button>
-                    <button onClick={(e) => this.callbackLoadCollection('https://raw.githubusercontent.com/Participatory-Image-Archives/pia-data-model/main/iiif/boilerplates/collection_boilerplate01.json')}>
+                    <button onClick={(e) => this.callbackLoadCollection('https://iiif.participatory-archives.ch/collections/4.json')}>
                     Load Familie Kreis Collection (SGV_10)
                     </button>
-                    <button onClick={(e) => this.callbackLoadCollection('https://raw.githubusercontent.com/Participatory-Image-Archives/pia-data-model/main/iiif/boilerplates/collection_boilerplate02.json')}>
+                    <button onClick={(e) => this.callbackLoadCollection('https://iiif.participatory-archives.ch/collections/13.json')}>
                     Load Ernst Brunner Collection (SGV_12)
                     </button>
                     <InputCollection loadCallback={this.callbackLoadCollection} />
