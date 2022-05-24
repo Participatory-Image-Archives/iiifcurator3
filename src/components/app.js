@@ -160,7 +160,7 @@ class App extends Component {
         return (
             <div className={styles.gridwrap}>
                 <div className={styles.headleft}>
-                    <button onClick={(e) => this.callbackLoadCollection('https://raw.githubusercontent.com/Participatory-Image-Archives/pia-data-model/main/iiif/boilerplates/collection_boilerplate_empty.json')}>
+                    <button onClick={(e) => this.callbackLoadCollection('https://raw.githubusercontent.com/Participatory-Image-Archives/pia-iiif-manifest-host/main/boilerplates/collection_boilerplate_empty.json')}>
                     Load Empty Collection
                     </button>
                     <button onClick={(e) => this.callbackLoadCollection('https://iiif.participatory-archives.ch/collections/4.json')}>
